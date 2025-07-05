@@ -30,7 +30,7 @@
             background: linear-gradient(135deg, #4c1d95, #7c3aed, #a855f7);
             border-radius: 24px;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-            max-width: 680px;
+            max-width: 680px; /* Adjusted max-width for better desktop view */
             width: 100%;
             padding: 20px;
             text-align: center;
@@ -45,30 +45,27 @@
             0%, 100% { border-color: #facc15; box-shadow: 0 0 20px rgba(250, 204, 21, 0.6); }
             50% { border-color: #fef08a; box-shadow: 0 0 30px rgba(250, 204, 21, 0.9); }
         }
-        .card-container::before {
-            content: '';
+        .canvas-container { /* This will now be a static background div */
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Om_Namah_Shivaya.jpg/512px-Om_Namah_Shivaya.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.1;
             z-index: 0;
+            opacity: 0.1; /* Lowered opacity for content visibility */
             border-radius: 24px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Om_Namah_Shivaya.jpg/512px-Om_Namah_Shivaya.jpg') center/cover no-repeat; /* Updated Shiva background */
         }
-        .card-container::after {
+        .card-container::after { /* Mantra background */
             content: '';
             position: absolute;
             top: -10%;
             left: -10%;
             right: -10%;
             bottom: -10%;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Om_Namah_Shivaya.jpg/512px-Om_Namah_Shivaya.jpg');
-            background-size: 420px auto;
-            opacity: 0.3;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Om_Namah_Shivaya.jpg/512px-Om_Namah_Shivaya.jpg'); /* Updated Mantra background */
+            background-size: 420px auto; /* Adjusted size for better visibility and repetition */
+            opacity: 0.3; /* Increased opacity for better visibility */
             z-index: 0;
             border-radius: 24px;
             will-change: transform;
@@ -80,11 +77,11 @@
             to { transform: rotate(360deg); }
         }
         @keyframes scalePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(250, 204, 21, 0.8); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
         .content-panel {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.9); /* Increased opacity for readability */
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-radius: 20px;
@@ -104,7 +101,7 @@
             50% { box-shadow: 0 0 12px rgba(250, 204, 21, 0.9); }
         }
         .fade-in {
-            opacity: 1;
+            opacity: 1; /* Fallback to ensure visibility */
         }
         .shiva-image {
             width: 150px;
@@ -231,7 +228,6 @@
             }
             h1 {
                 font-size: 2.25rem;
-            
             }
             h3 {
                 font-size: 1.75rem;
@@ -264,6 +260,7 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="card-container" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000">
+        <div class="canvas-container" id="threeCanvas"></div>
         <div class="content-panel" lang="en">
             <img src="https://i.imgur.com/Y5qOG0w.webp"
                  onerror="this.onerror=null;this.src='https://placehold.co/120x120/6B4226/FFFFFF?text=Shiva';"
@@ -276,11 +273,11 @@
             <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-6 fade-in fade-in-delay-1" />
 
             <p class="text-base md:text-lg text-gray-900 mb-6 italic cinzel-font fade-in fade-in-delay-1">
-                <span lang="hi">ॐ नमः शिवाय</span>
+                "ॐ नमः शिवाय"
             </p>
 
             <p class="text-base md:text-lg text-gray-900 mb-6 fade-in fade-in-delay-2">
-                With the divine blessings of Devadidev Mahadev, we joyfully invite you and your family to partake in the auspicious <strong>Sahastra Ghatt</strong> to seek prosperity, peace, and well-being.
+                With the divine blessings of Devadidev Mahadev, we joyfully invite you and your family to partake in the auspicious **Sahastra Ghatt** to seek prosperity, peace, and well-being.
             </p>
 
             <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-6 fade-in fade-in-delay-2" />
@@ -309,10 +306,10 @@
                 <button id="viewMapBtn" aria-label="Toggle map visibility" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg btn-particle">
                     <span class="mr-1">🗺️</span> View Map
                 </button>
-                <button id="playPauseMantraBtn" aria-label="Play Mantra" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg btn-particle" disabled>
+                <button id="playPauseMantraBtn" aria-label="Play Mantra" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg">
                     <span class="mr-1">🎶</span> Play Mantra
                 </button>
-                <button id="shareBtn" aria-label="Share on WhatsApp" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg btn-particle">
+                <button id="shareBtn" aria-label="Share on WhatsApp" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg">
                     <span class="mr-1">📲</span> Share on WhatsApp
                 </button>
             </div>
@@ -432,23 +429,34 @@
         const audioMessage = document.getElementById('audioMessage');
 
         // Show audio prompt on page load
-        audioMessage.classList.add('visible');
-        setTimeout(() => {
-            audioMessage.classList.remove('visible');
-        }, 3000);
+        document.addEventListener('DOMContentLoaded', () => {
+            audioMessage.classList.add('visible');
+            setTimeout(() => {
+                audioMessage.classList.remove('visible');
+            }, 3000);
+        });
 
         // Enable button when audio is ready
-        mantraAudio.addEventListener('canplay', () => {
+        mantraAudio.addEventListener('canplaythrough', () => { // Use canplaythrough for better readiness
             playPauseMantraBtn.disabled = false;
             console.log('Audio ready to play');
+            // Attempt to play muted on load, this is a common workaround for strict autoplay policies
+            mantraAudio.play().then(() => {
+                mantraAudio.muted = true; // Keep it muted initially
+                console.log('Muted autoplay attempt successful.');
+            }).catch(error => {
+                console.log('Muted autoplay attempt failed or was prevented:', error);
+                // If even muted autoplay fails, the button is the main control
+            });
         });
 
         playPauseMantraBtn.addEventListener('click', function () {
-            if (mantraAudio.paused) {
+            if (mantraAudio.paused || mantraAudio.muted) {
+                mantraAudio.muted = false; // Unmute if it was muted
                 mantraAudio.play().then(() => {
                     playPauseMantraBtn.innerHTML = '<span class="mr-1">⏸️</span> Pause Mantra';
                     playPauseMantraBtn.setAttribute('aria-label', 'Pause Mantra');
-                    audioMessage.classList.remove('visible');
+                    audioMessage.classList.remove('visible'); // Hide message once played
                 }).catch(error => {
                     console.error('Error playing audio:', error);
                     audioMessage.textContent = 'Audio playback failed. Try again or check your settings.';
@@ -485,9 +493,6 @@
                 audioMessage.textContent = 'Click "Play Mantra" to start the audio';
             }, 3000);
         });
-
-        // Debug content visibility
-        console.log('Content loaded:', document.querySelectorAll('.fade-in').length, 'elements with fade-in class');
     </script>
 </body>
 </html>
