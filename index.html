@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sahastra Ghatt Puja Invitation</title>
+    
+    <!-- Open Graph Meta Tags for WhatsApp Sharing -->
+    <meta property="og:title" content="सहस्त्र घट महापूजन निमंत्रण 🙏" />
+    <meta property="og:description" content="प्रियजन, आपको सपरिवार आमंत्रित करते हैं: 🔱 सहस्त्र घट पूजन एवं महाप्रसाद | 🗓️ रविवार, 3 अगस्त 2025, 🕔 शाम 5 बजे | 📍 शिव मंदिर, कमल अपार्टमेंट 1, बानी पार्क, जयपुर | 🌸 आपकी उपस्थिति हमारे लिए सौभाग्य होगी। ☎️ संपर्क: श्री राम गोपाल शर्मा – 9602570948" />
+    <meta property="og:image" content="https://i.imgur.com/Y5qOG0w.png" />
+    <meta property="og:url" content="https://khushahal.github.io/invitation/" />
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -13,26 +20,68 @@
     <!-- Vanilla Tilt for card tilt effect -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
     <style>
+        /* Main body to center the phone */
         body {
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            background: linear-gradient(135deg, #fefce8, #fed7aa, #f97316);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 16px;
+            background: linear-gradient(135deg, #6b7280, #374151);
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            padding: 2rem 1rem;
+        }
+
+        /* Phone Bezel for 360px preview */
+        .phone-bezel {
+            width: 360px;
+            height: 780px;
+            border: 14px solid #1f2937;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5), inset 0 0 1px 1px rgba(255,255,255,0.1);
+            position: relative;
+            background: #111827;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fefce8, #fed7aa, #f97316);
+            border-radius: 26px;
+            overflow-y: auto;
+            position: relative;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .phone-screen::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 20px;
+            background: #1f2937;
+            border-radius: 0 0 10px 10px;
+            z-index: 10;
+        }
+
+        /* All original styles are now contained within the .phone-screen */
+        .invitation-body {
+            padding: 1rem;
             box-sizing: border-box;
             overflow-x: hidden;
-            position: relative;
         }
+
         .card-container {
             background: linear-gradient(135deg, #4c1d95, #7c3aed, #a855f7);
             border-radius: 24px;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-            max-width: 680px; /* Adjusted max-width for better desktop view */
             width: 100%;
-            padding: 20px;
+            padding: 1rem;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -40,458 +89,292 @@
             animation: glowingBorder 4s ease-in-out infinite;
             transform-style: preserve-3d;
             z-index: 1;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
         }
+        /* Touch animation for mobile */
+        .card-container.is-touched {
+            transform: scale(1.03);
+            box-shadow: 0 25px 55px rgba(0,0,0,0.6);
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+
         @keyframes glowingBorder {
             0%, 100% { border-color: #facc15; box-shadow: 0 0 20px rgba(250, 204, 21, 0.6); }
             50% { border-color: #fef08a; box-shadow: 0 0 30px rgba(250, 204, 21, 0.9); }
         }
-        .canvas-container { /* This will now be a static background div */
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            opacity: 0.1; /* Lowered opacity for content visibility */
-            border-radius: 24px;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Om_Namah_Shivaya.jpg/512px-Om_Namah_Shivaya.jpg') center/cover no-repeat; /* Updated Shiva background */
+        .card-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://i.imgur.com/n3hK7Zy.png');
+            background-size: cover; background-position: center;
+            opacity: 0.1; z-index: -1; border-radius: 24px;
         }
-        .card-container::after { /* Mantra background */
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            right: -10%;
-            bottom: -10%;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Om_Namah_Shivaya.jpg/512px-Om_Namah_Shivaya.jpg'); /* Updated Mantra background */
-            background-size: 420px auto; /* Adjusted size for better visibility and repetition */
-            opacity: 0.3; /* Increased opacity for better visibility */
-            z-index: 0;
-            border-radius: 24px;
-            will-change: transform;
-            animation: rotateMandala 15s linear infinite, scalePulse 8s ease-in-out infinite;
-            -webkit-animation: rotateMandala 15s linear infinite, scalePulse 8s ease-in-out infinite;
+        .mandala-image {
+            position: absolute; top: -15%; left: -15%; width: 130%; height: 130%;
+            object-fit: cover; opacity: 0.4; z-index: -1;
+            will-change: transform; animation: rotateMandala 20s linear infinite;
         }
-        @keyframes rotateMandala {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes rotateMandala { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .shiva-ganga {
+            position: absolute; top: 5%; left: 5%; width: 120px; height: 120px;
+            object-fit: cover; opacity: 0; z-index: 0; will-change: transform, opacity;
+            animation: fadeInShiva 1s ease-in-out 5s forwards, floatShiva 4s ease-in-out infinite 5s;
         }
-        @keyframes scalePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+        @keyframes fadeInShiva { from { opacity: 0; transform: scale(0.8); } to { opacity: 0.3; transform: scale(1); } }
+        @keyframes floatShiva { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
         .content-panel {
-            background: rgba(255, 255, 255, 0.9); /* Increased opacity for readability */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 24px;
-            position: relative;
-            z-index: 2;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px; position: relative; z-index: 2;
             border: 2px solid rgba(250, 204, 21, 0.4);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-        .heading-icon {
-            animation: sparkle 3s ease-in-out infinite;
-            -webkit-animation: sparkle 3s ease-in-out infinite;
-            display: inline-block;
-        }
-        @keyframes sparkle {
-            0%, 100% { box-shadow: 0 0 6px rgba(250, 204, 21, 0.6); }
-            50% { box-shadow: 0 0 12px rgba(250, 204, 21, 0.9); }
-        }
-        .fade-in {
-            opacity: 1; /* Fallback to ensure visibility */
+            padding: 1rem;
         }
         .shiva-image {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 6px solid #facc15;
-            margin-bottom: 24px;
+            width: 7rem; height: 7rem; /* w-28 h-28 */
+            object-fit: cover; border-radius: 50%; border: 4px solid #facc15;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: floatGlow 3.5s ease-in-out infinite;
-            -webkit-animation: floatGlow 3.5s ease-in-out infinite;
-            transform-style: preserve-3d;
+            animation: floatGlow 3.5s ease-in-out infinite; transform-style: preserve-3d;
         }
         @keyframes floatGlow {
             0%, 100% { transform: translateY(0) rotateY(0deg); box-shadow: 0 0 20px rgba(250, 204, 21, 0.6); }
-            50% { transform: translateY(-12px) rotateY(10deg); box-shadow: 0 0 30px rgba(250, 204, 21, 0.9); }
+            50% { transform: translateY(-10px) rotateY(5deg); box-shadow: 0 0 30px rgba(250, 204, 21, 0.9); }
         }
         .map-container {
-            width: 100%;
-            height: 240px;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 24px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-            border: 2px solid #facc15;
-            display: none;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            width: 100%; height: 200px; border-radius: 12px; overflow: hidden;
+            margin-top: 1.5rem; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            border: 2px solid #facc15; display: none; opacity: 0;
+            transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;
         }
-        .map-container.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-        .cinzel-font {
-            font-family: 'Cinzel', serif;
-        }
+        .map-container.active { display: block; opacity: 1; transform: translateY(0); }
+        .map-container iframe { width: 100%; height: 100%; border: 0; }
+        .cinzel-font { font-family: 'Cinzel', serif; }
+        
         .copy-message, .audio-message {
-            position: fixed;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-            z-index: 10;
+            position: fixed; background-color: #4CAF50; color: white; padding: 10px 20px;
+            border-radius: 8px; font-size: 0.875rem; top: 80px; /* Adjusted for notch */
+            left: 50%; transform: translateX(-50%); opacity: 0;
+            transition: opacity 0.4s ease-in-out; z-index: 1000;
         }
-        .audio-message {
-            background-color: #1e40af;
-            top: 60px;
-        }
-        .copy-message.visible, .audio-message.visible {
-            opacity: 1;
-        }
+        .audio-message { background-color: #1e40af; top: 120px; }
+        .copy-message.visible, .audio-message.visible { opacity: 1; }
+        
         button {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            transform-style: preserve-3d;
+            position: relative; overflow: hidden; transition: all 0.3s ease; transform-style: preserve-3d;
         }
         button:hover {
             transform: scale(1.05) translateY(-3px) rotateX(5deg);
             box-shadow: 0 0 25px rgba(250, 204, 21, 0.8);
         }
-        button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
-        }
-        button:active::after {
-            width: 250px;
-            height: 250px;
-            opacity: 0.3;
-        }
-        .btn-particle::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2" fill="rgba(250,204,21,0.8)"/></svg>') repeat;
-            background-size: 20px;
-            opacity: 0;
-            animation: particleBurst 0.5s ease forwards;
-            -webkit-animation: particleBurst 0.5s ease forwards;
-            pointer-events: none;
-        }
-        button:hover .btn-particle::before {
-            opacity: 0.3;
-        }
-        @keyframes particleBurst {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 0.3; }
-        }
-        @media (max-width: 768px) {
-            .card-container {
-                padding: 12px;
-                max-width: 95%;
-            }
-            .content-panel {
-                padding: 16px;
-            }
-            .shiva-image {
-                width: 120px;
-                height: 120px;
-                border-width: 4px;
-            }
-            h1 {
-                font-size: 2.25rem;
-            }
-            h3 {
-                font-size: 1.75rem;
-            }
-            p, li {
-                font-size: 1.125rem;
-                line-height: 1.6;
-                color: #1f2937;
-            }
-            .map-container {
-                height: 200px;
-            }
-            .btn-group {
-                display: flex;
-                flex-direction: column;
-                gap: 1.25rem;
-            }
-            button {
-                font-size: 1.125rem;
-                padding: 12px 24px;
-            }
-            hr {
-                margin: 20px auto;
-            }
-            .card-container::after {
-                background-size: 300px auto;
-            }
-        }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="card-container" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000">
-        <div class="canvas-container" id="threeCanvas"></div>
-        <div class="content-panel" lang="en">
-            <img src="https://i.imgur.com/Y5qOG0w.webp"
-                 onerror="this.onerror=null;this.src='https://placehold.co/120x120/6B4226/FFFFFF?text=Shiva';"
-                 alt="Lord Shiva meditating with divine aura" class="shiva-image mx-auto" loading="lazy" />
+<body>
+    <div class="phone-bezel">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+            <div class="invitation-body">
+                <div class="card-container">
+                    <img src="https://i.imgur.com/n3hK7Zy.png" onerror="this.onerror=null;this.src='https://placehold.co/600x600/000000/FFFFFF?text=Mandala';" alt="Om Namah Shivaya Mandala" class="mandala-image" />
+                    <img src="https://i.imgur.com/5j8B7xT.jpg" onerror="this.onerror=null;this.src='https://placehold.co/200x200/FFFFFF/000000?text=Shiva';" alt="Lord Shiva with Ganga" class="shiva-ganga" />
+                    
+                    <div class="content-panel">
+                        <img src="https://i.imgur.com/Y5qOG0w.png"
+                             onerror="this.onerror=null;this.src='https://placehold.co/120x120/6B4226/FFFFFF?text=Shiva';"
+                             alt="Lord Shiva meditating" class="shiva-image mx-auto mb-6" />
 
-            <h1 class="text-3xl md:text-4xl font-extrabold text-red-900 mb-4 heading-icon cinzel-font fade-in">
-                <span class="text-yellow-500">🙏</span> Sahastra Ghatt Invitation <span class="text-yellow-500">🙏</span>
-            </h1>
+                        <h1 class="text-2xl font-extrabold text-red-900 mb-4 cinzel-font">
+                            <span class="text-yellow-500">🙏</span> Sahastra Ghatt Invitation <span class="text-yellow-500">🙏</span>
+                        </h1>
 
-            <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-6 fade-in fade-in-delay-1" />
+                        <hr class="border-t-2 border-yellow-500 w-36 mx-auto mb-6" />
 
-            <p class="text-base md:text-lg text-gray-900 mb-6 italic cinzel-font fade-in fade-in-delay-1">
-                "ॐ नमः शिवाय"
-            </p>
+                        <p class="text-lg text-gray-900 mb-6 italic cinzel-font">
+                            <span lang="hi">ॐ नमः शिवाय</span>
+                        </p>
 
-            <p class="text-base md:text-lg text-gray-900 mb-6 fade-in fade-in-delay-2">
-                With the divine blessings of Devadidev Mahadev, we joyfully invite you and your family to partake in the auspicious **Sahastra Ghatt** to seek prosperity, peace, and well-being.
-            </p>
+                        <p class="text-base text-gray-800 mb-6">
+                            With the divine blessings of Devadidev Mahadev, we joyfully invite you and your family to partake in the auspicious <strong>Sahastra Ghatt</strong> to seek prosperity, peace, and well-being.
+                        </p>
 
-            <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-6 fade-in fade-in-delay-2" />
+                        <hr class="border-t-2 border-yellow-500 w-36 mx-auto mb-6" />
 
-            <h3 class="text-xl md:text-2xl font-bold text-red-900 mb-4 cinzel-font fade-in fade-in-delay-3">Event Details:</h3>
-            <ul class="text-left text-base md:text-lg text-gray-900 space-y-3 mb-6 px-4 fade-in fade-in-delay-3">
-                <li class="flex items-start">
-                    <span class="text-yellow-500 mr-2 text-xl">🗓️</span>
-                    <strong class="w-28 inline-block">Date:</strong> <span id="eventDate"></span>
-                </li>
-                <li class="flex items-start">
-                    <span class="text-yellow-500 mr-2 text-xl">⏰</span>
-                    <strong class="w-28 inline-block">Time:</strong> 5:00 PM onwards
-                </li>
-                <li class="flex items-start">
-                    <span class="text-yellow-500 mr-2 text-xl">📍</span>
-                    <strong class="w-28 inline-block">Venue:</strong> Shiv Mandir, Kamal Apartment 1, Jaipur
-                </li>
-                <li class="flex items-start">
-                    <span class="text-yellow-500 mr-2 text-xl">🗺️</span>
-                    <strong class="w-28 inline-block">Map:</strong> <a href="https://www.google.com/maps/search/?api=1&query=WQGM%2B7J9+Kamal%20Apartment%201,%20Ram%20Mandir%20Rd,%20Bani%20Park,%20Jaipur,%20Rajasthan%20302016" target="_blank" class="text-blue-600 hover:underline">View Here</a>
-                </li>
-            </ul>
+                        <h3 class="text-xl font-bold text-red-900 mb-4 cinzel-font">Event Details:</h3>
+                        <div class="text-left text-base text-gray-800 space-y-4 mb-8 px-2">
+                            <div class="flex items-start gap-x-3">
+                                <span class="text-yellow-500 text-xl mt-1">🗓️</span>
+                                <div><strong class="font-semibold text-gray-900">Date:</strong> <span id="eventDate"></span></div>
+                            </div>
+                            <div class="flex items-start gap-x-3">
+                                <span class="text-yellow-500 text-xl mt-1">⏰</span>
+                                <div><strong class="font-semibold text-gray-900">Time:</strong> 5:00 PM onwards</div>
+                            </div>
+                            <div class="flex items-start gap-x-3">
+                                <span class="text-yellow-500 text-xl mt-1">📍</span>
+                                <div><strong class="font-semibold text-gray-900">Venue:</strong> Shiv Mandir, Kamal Apartment 1, Jaipur</div>
+                            </div>
+                             <div class="flex items-start gap-x-3">
+                                <span class="text-yellow-500 text-xl mt-1">🗺️</span>
+                                <div><strong class="font-semibold text-gray-900">Map:</strong> <a href="https://www.google.com/maps/search/?api=1&query=WQGM%2B7J9+Kamal%20Apartment%201,%20Ram%20Mandir%20Rd,%20Bani%20Park,%20Jaipur,%20Rajasthan%20302016" target="_blank" class="text-blue-600 hover:underline">View Here</a></div>
+                            </div>
+                        </div>
 
-            <div class="btn-group flex justify-center items-center flex-wrap gap-4 fade-in fade-in-delay-4">
-                <button id="viewMapBtn" aria-label="Toggle map visibility" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg btn-particle">
-                    <span class="mr-1">🗺️</span> View Map
-                </button>
-                <button id="playPauseMantraBtn" aria-label="Play Mantra" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg">
-                    <span class="mr-1">🎶</span> Play Mantra
-                </button>
-                <button id="shareBtn" aria-label="Share on WhatsApp" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow hover:shadow-lg">
-                    <span class="mr-1">📲</span> Share on WhatsApp
-                </button>
+                        <div class="flex flex-col justify-center items-center gap-4">
+                            <button id="viewMapBtn" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
+                                <span class="mr-1">🗺️</span> View Map
+                            </button>
+                            <button id="playPauseMantraBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg" disabled>
+                                <span class="mr-1">🎶</span> Play Mantra
+                            </button>
+                            <button id="shareBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
+                                <span class="mr-1">📲</span> Share
+                            </button>
+                        </div>
+
+                        <div id="mapSection" class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.125139789718!2d75.79975767500588!3d26.900989360814923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db30182650001%3A0x2720d2c94a5e12e!2sShiv%20Mandir%2C%20Kamal%20Apartment%201%2C%20Ram%20Mandir%20Rd%2C%20Bani%20Park%2C%20Jaipur%20Rajasthan%20302016!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+
+                        <p class="text-base text-gray-800 mt-8">
+                            Your esteemed presence will make this occasion truly special.
+                        </p>
+
+                        <hr class="border-t-2 border-yellow-500 w-36 mx-auto my-6" />
+
+                        <p class="text-base font-semibold text-red-900 mb-2 cinzel-font">
+                            With Best Regards,
+                        </p>
+                        <div class="text-base text-gray-800">
+                            <p>Mr Ram Gopal Sharma & Family</p>
+                            <div class="flex items-center justify-center mt-2">
+                                <span>Mob: 9602570948</span>
+                                <button id="copyMobBtn" aria-label="Copy mobile number" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs py-1 px-2 rounded-md">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <span id="copyMessage" class="copy-message">Copied!</span>
+                        <span id="audioMessage" class="audio-message">Click "Play Mantra" to start the audio</span>
+                    </div>
+                </div>
             </div>
-
-            <div id="mapSection" class="map-container">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.125139789718!2d75.79975767500588!3d26.900989360814923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db30182650001%3A0x2720d2c94a5e12e!2sShiv%20Mandir%2C%20Kamal%20Apartment%201%2C%20Ram%20Mandir%20Rd%2C%20Bani%20Park%2C%20Jaipur%20Rajasthan%20302016!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-            </div>
-
-            <p class="text-base md:text-lg text-gray-900 mb-6 mt-6 fade-in fade-in-delay-4">
-                Your esteemed presence will make this occasion truly special. We eagerly await your arrival.
-            </p>
-
-            <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-6 fade-in fade-in-delay-4" />
-
-            <p class="text-base md:text-lg font-semibold text-red-900 mb-3 cinzel-font fade-in fade-in-delay-4">
-                With Best Regards,
-            </p>
-            <p class="text-base md:text-lg text-gray-900 relative fade-in fade-in-delay-4">
-                Mr Ram Gopal Sharma<br />
-                Tamada Family<br />
-                Mob: 9602570948
-                <button id="copyMobBtn" aria-label="Copy mobile number" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm py-1 px-3 rounded-md btn-particle">
-                    Copy
-                </button>
-                <span id="copyMessage" class="copy-message">Copied!</span>
-                <span id="audioMessage" class="audio-message">Click "Play Mantra" to start the audio</span>
-            </p>
         </div>
     </div>
 
-    <!-- Audio Player for Shiv Tandav Stotram -->
     <audio id="mantraAudio" loop>
-        <source src="https://cf-hls-media.sndcdn.com/media/159660/159241/318900/ybnrVWcX7XSe.128.mp3?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiKjovL2NmLWhscy1tZWRpYS5zbmRjZG4uY29tL21lZGlhLzE1OTY2MC8qLyoveWJuclZXY1g3WFNlLjEyOC5tcDMiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NTE3NDYyODV9fX1dfQ__&Signature=KTZuQac1IQdAT2hr7jA4MS6yUSyvchGYxd5JyDT~cDE4rtWs~2qo5ylqFb2nGepj10W6QIjhjNPY2KZw-IVvoV~CA4hKYrDHVPonl7g5di~HhNqL9gTkMJEj5uTRfMz9gqkY5hdi~TELlSLC25j6v4pRC4pmsQB0tkztYEeRNjYsUh5-lJgeXVS8U7zKHAHW0oiovzB24hhEVVmHpTLr2NrARQRGND1SAULUIb~WUz92BrjaJCIUEqhXHmaYXbZQqn4arrPk8qGvZYyPwp6Ab0RxmKweroz753ZmQe4tC3SfEVZjw9iCX~AWN8bFZTgHfhIS~6p8u407H29HTI3B~w__&Key-Pair-Id=APKAI6TU7MMXM5DG6EPQ" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/audio/2024/09/12/audio_abf0e340ff.mp3" type="audio/mpeg">
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <script>
-        // Populate date immediately
-        function getFormattedDate() {
-            try {
-                const eventDate = new Date('2025-08-03');
-                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const dayName = days[eventDate.getDay()];
-                const dateStr = eventDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-                console.log('Date set:', `${dayName}, ${dateStr}`);
-                return `${dayName}, ${dateStr}`;
-            } catch (error) {
-                console.error('Error formatting date:', error);
-                return 'August 3, 2025';
-            }
-        }
-        const eventDateElement = document.getElementById('eventDate');
-        if (eventDateElement) {
-            eventDateElement.textContent = getFormattedDate();
-        } else {
-            console.error('Element with ID "eventDate" not found');
-        }
-
-        // GSAP Animations
-        gsap.from('.fade-in', {
-            opacity: 0,
-            y: 30,
-            duration: 1.5,
-            stagger: 0.3,
-            ease: 'power3.out',
-            onComplete: () => {
-                document.querySelectorAll('.fade-in').forEach(el => el.style.opacity = '1');
-            }
-        });
-
-        // Vanilla Tilt for Card
-        VanillaTilt.init(document.querySelector('.card-container'), {
-            max: 10,
-            speed: 400,
-            perspective: 1000,
-            glare: true,
-            'max-glare': 0.3
-        });
-
-        // Toggle map visibility
-        document.getElementById('viewMapBtn').addEventListener('click', function () {
-            const mapSection = document.getElementById('mapSection');
-            mapSection.classList.toggle('active');
-            gsap.to(mapSection, { opacity: mapSection.classList.contains('active') ? 1 : 0, y: mapSection.classList.contains('active') ? 0 : 30, duration: 0.6 });
-        });
-
-        // Copy mobile number
-        document.getElementById('copyMobBtn').addEventListener('click', function () {
-            const mobileNumber = '9602570948';
-            navigator.clipboard.writeText(mobileNumber).then(() => {
-                const copyMessage = document.getElementById('copyMessage');
-                copyMessage.classList.add('visible');
-                setTimeout(() => {
-                    copyMessage.classList.remove('visible');
-                }, 1500);
-            }).catch(error => {
-                console.error('Error copying mobile number:', error);
-            });
-        });
-
-        // Share via WhatsApp
-        document.getElementById('shareBtn').addEventListener('click', function () {
-            const eventDate = getFormattedDate();
-            const url = window.location.href;
-            const text = `You are cordially invited to the Sahastra Ghatt Puja on ${eventDate} at Shiv Mandir, Jaipur! View details:`;
-            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`;
-            window.open(whatsappUrl, '_blank');
-        });
-
-        // Audio Play/Pause functionality
-        const mantraAudio = document.getElementById('mantraAudio');
-        const playPauseMantraBtn = document.getElementById('playPauseMantraBtn');
-        const audioMessage = document.getElementById('audioMessage');
-
-        // Show audio prompt on page load
         document.addEventListener('DOMContentLoaded', () => {
-            audioMessage.classList.add('visible');
-            setTimeout(() => {
-                audioMessage.classList.remove('visible');
-            }, 3000);
-        });
+            const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-        // Enable button when audio is ready
-        mantraAudio.addEventListener('canplaythrough', () => { // Use canplaythrough for better readiness
-            playPauseMantraBtn.disabled = false;
-            console.log('Audio ready to play');
-            // Attempt to play muted on load, this is a common workaround for strict autoplay policies
-            mantraAudio.play().then(() => {
-                mantraAudio.muted = true; // Keep it muted initially
-                console.log('Muted autoplay attempt successful.');
-            }).catch(error => {
-                console.log('Muted autoplay attempt failed or was prevented:', error);
-                // If even muted autoplay fails, the button is the main control
-            });
-        });
-
-        playPauseMantraBtn.addEventListener('click', function () {
-            if (mantraAudio.paused || mantraAudio.muted) {
-                mantraAudio.muted = false; // Unmute if it was muted
-                mantraAudio.play().then(() => {
-                    playPauseMantraBtn.innerHTML = '<span class="mr-1">⏸️</span> Pause Mantra';
-                    playPauseMantraBtn.setAttribute('aria-label', 'Pause Mantra');
-                    audioMessage.classList.remove('visible'); // Hide message once played
-                }).catch(error => {
-                    console.error('Error playing audio:', error);
-                    audioMessage.textContent = 'Audio playback failed. Try again or check your settings.';
-                    audioMessage.classList.add('visible');
-                    setTimeout(() => {
-                        audioMessage.classList.remove('visible');
-                        audioMessage.textContent = 'Click "Play Mantra" to start the audio';
-                    }, 3000);
-                });
-            } else {
-                mantraAudio.pause();
-                playPauseMantraBtn.innerHTML = '<span class="mr-1">🎶</span> Play Mantra';
-                playPauseMantraBtn.setAttribute('aria-label', 'Play Mantra');
+            // Populate date immediately
+            try {
+                const eventDate = new Date('2025-08-03T17:00:00');
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('eventDate').textContent = eventDate.toLocaleDateString('en-US', options);
+            } catch (e) {
+                console.error("Date formatting failed:", e);
+                document.getElementById('eventDate').textContent = 'Sunday, August 3, 2025';
             }
-        });
 
-        mantraAudio.addEventListener('pause', () => {
-            playPauseMantraBtn.innerHTML = '<span class="mr-1">🎶</span> Play Mantra';
-            playPauseMantraBtn.setAttribute('aria-label', 'Play Mantra');
-        });
-        mantraAudio.addEventListener('play', () => {
-            playPauseMantraBtn.innerHTML = '<span class="mr-1">⏸️</span> Pause Mantra';
-            playPauseMantraBtn.setAttribute('aria-label', 'Pause Mantra');
-        });
-        mantraAudio.addEventListener('error', () => {
-            console.error('Audio loading error');
-            playPauseMantraBtn.innerHTML = '<span class="mr-1">⚠️</span> Audio Unavailable';
-            playPauseMantraBtn.disabled = true;
-            playPauseMantraBtn.setAttribute('aria-label', 'Audio Unavailable');
-            audioMessage.textContent = 'Audio file could not load. Please check your connection.';
-            audioMessage.classList.add('visible');
-            setTimeout(() => {
-                audioMessage.classList.remove('visible');
-                audioMessage.textContent = 'Click "Play Mantra" to start the audio';
-            }, 3000);
+            // GSAP Animations
+            if (typeof gsap !== 'undefined') {
+                gsap.from('.shiva-image, h1, hr, p, h3, .text-left, .flex-col', {
+                    opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: 'power3.out',
+                });
+            }
+
+            // Card Animations: Tilt for Desktop, Touch for Mobile
+            const card = document.querySelector('.card-container');
+            if (card) {
+                if (!isTouchDevice() && typeof VanillaTilt !== 'undefined') {
+                    VanillaTilt.init(card, {
+                        max: 8, speed: 400, perspective: 1000, glare: true, 'max-glare': 0.2
+                    });
+                } else {
+                    card.addEventListener('touchstart', () => card.classList.add('is-touched'), { passive: true });
+                    card.addEventListener('touchend', () => card.classList.remove('is-touched'));
+                    card.addEventListener('touchcancel', () => card.classList.remove('is-touched'));
+                }
+            }
+
+            // Map Toggle
+            const viewMapBtn = document.getElementById('viewMapBtn');
+            const mapSection = document.getElementById('mapSection');
+            if (viewMapBtn && mapSection) {
+                viewMapBtn.addEventListener('click', () => mapSection.classList.toggle('active'));
+            }
+
+            // Copy Mobile Number
+            const copyMobBtn = document.getElementById('copyMobBtn');
+            const copyMessage = document.getElementById('copyMessage');
+            if (copyMobBtn && copyMessage) {
+                copyMobBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText('9602570948').then(() => {
+                        copyMessage.classList.add('visible');
+                        setTimeout(() => copyMessage.classList.remove('visible'), 2000);
+                    }).catch(err => console.error('Failed to copy:', err));
+                });
+            }
+            
+            // Share on WhatsApp
+            const shareBtn = document.getElementById('shareBtn');
+            if(shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    const text = `🙏 You are cordially invited to the Sahastra Ghatt Puja 🙏\n\nJoin us for this auspicious occasion to seek divine blessings.\n\n🗓️ Date: Sunday, August 3, 2025\n⏰ Time: 5:00 PM onwards\n📍 Venue: Shiv Mandir, Kamal Apartment 1, Jaipur\n\nView the full invitation:`;
+                    const url = 'https://khushahal.github.io/invitation/';
+                    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
+
+            // Audio Controls
+            const mantraAudio = document.getElementById('mantraAudio');
+            const playPauseMantraBtn = document.getElementById('playPauseMantraBtn');
+            const audioMessage = document.getElementById('audioMessage');
+            
+            if(mantraAudio && playPauseMantraBtn && audioMessage) {
+                const showAudioMessage = (msg) => {
+                    audioMessage.textContent = msg;
+                    audioMessage.classList.add('visible');
+                    setTimeout(() => audioMessage.classList.remove('visible'), 4000);
+                };
+
+                const updateButtonState = () => {
+                    playPauseMantraBtn.innerHTML = mantraAudio.paused 
+                        ? '<span class="mr-1">🎶</span> Play Mantra' 
+                        : '<span class="mr-1">⏸️</span> Pause Mantra';
+                };
+                
+                mantraAudio.addEventListener('canplaythrough', () => playPauseMantraBtn.disabled = false);
+                mantraAudio.addEventListener('play', updateButtonState);
+                mantraAudio.addEventListener('pause', updateButtonState);
+                mantraAudio.addEventListener('error', () => {
+                    playPauseMantraBtn.disabled = true;
+                    playPauseMantraBtn.innerHTML = '<span class="mr-1">⚠️</span> Audio Error';
+                    showAudioMessage('Audio could not be loaded.');
+                });
+                
+                playPauseMantraBtn.addEventListener('click', () => {
+                    if (mantraAudio.paused) {
+                        mantraAudio.play().catch(() => showAudioMessage('Autoplay blocked. Please press play.'));
+                    } else {
+                        mantraAudio.pause();
+                    }
+                });
+                
+                const playOnFirstInteraction = () => {
+                    if(mantraAudio.paused) mantraAudio.play().catch(()=>{});
+                    document.body.removeEventListener('click', playOnFirstInteraction);
+                    document.body.removeEventListener('touchstart', playOnFirstInteraction);
+                };
+                document.body.addEventListener('click', playOnFirstInteraction);
+                document.body.addEventListener('touchstart', playOnFirstInteraction);
+            }
         });
     </script>
 </body>
