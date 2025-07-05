@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>शस्त्रघाट पूजा निमंत्रण</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a more traditional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Default font */
+            background: linear-gradient(to bottom right, #fefce8, #fef3c7); /* Light golden/cream background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .card-container {
+            background-color: #4c1d95; /* Deep violet background for the card frame */
+            border-radius: 20px; /* Rounded corners */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+            max-width: 720px; /* Wider for more grandeur */
+            width: 100%;
+            padding: 20px; /* Padding for the inner content panel */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #fcd34d; /* Golden border for the main card */
+        }
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Shiva background image - More prominent and subtle */
+            background-image: url('https://i.imgur.com/8Q0bZ9C.png'); /* Abstract divine Shiva image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.18; /* Increased opacity for more presence */
+            z-index: 0; /* Behind content and mantra */
+            border-radius: 20px;
+        }
+        .card-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Maha Mrityunjaya Mantra background - Using the provided image URL */
+            background-image: url('https://www.yogigems.com/wp-content/uploads/2016/07/mahamritunjaya.jpg');
+            background-size: 550px auto; /* Further increased size to reduce repetition, auto height */
+            background-repeat: repeat;
+            opacity: 0.15; /* Adjusted opacity for better visibility */
+            z-index: 0; /* Same z-index as ::before */
+            border-radius: 20px;
+        }
+        .content-panel {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white panel for content */
+            border-radius: 15px;
+            padding: 30px; /* Padding inside the content panel */
+            position: relative;
+            z-index: 2; /* Ensure this panel is above backgrounds */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #fcd34d; /* Golden border for inner panel */
+        }
+        .heading-icon {
+            animation: pulse 2s infinite ease-in-out; /* Subtle pulse animation */
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .shiva-image {
+            width: 160px; /* Slightly larger circular image */
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%; /* Make it circular */
+            border: 8px solid #fde68a; /* Thicker golden border */
+            margin-bottom: 30px; /* More space */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); /* Stronger shadow */
+            animation: rotateIn 1s ease-out forwards;
+            opacity: 0;
+            animation-delay: 0.5s; /* Delay image animation */
+        }
+
+        @keyframes rotateIn {
+            from { opacity: 0; transform: rotateY(90deg) scale(0.8); }
+            to { opacity: 1; transform: rotateY(0deg) scale(1); }
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px; /* Taller map */
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            border: 2px solid #fcd34d; /* Golden map border */
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Custom font for headings */
+        .cinzel-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Styles for copy message */
+        .copy-message {
+            position: absolute;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Allow clicks to pass through */
+            white-space: nowrap; /* Prevent text wrap */
+        }
+        .copy-message.visible {
+            opacity: 1;
+        }
+
+        /* Download instructions modal */
+        .download-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .download-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .card-container {
+                padding: 15px;
+                max-width: 95%;
+            }
+            .content-panel {
+                padding: 20px;
+            }
+            .shiva-image {
+                width: 120px;
+                height: 120px;
+            }
+            h1 {
+                font-size: 2.25rem; /* text-4xl */
+            }
+            h3 {
+                font-size: 1.5rem; /* text-2xl */
+            }
+            .map-container {
+                height: 200px;
+            }
+            .copy-message {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="card-container fade-in">
+        <div class="content-panel">
+            <!-- Shiva Image (circular) -->
+            <img src="https://i.imgur.com/Y5qOG0w.png"
+                 onerror="this.onerror=null;this.src='https://placehold.co/160x160/6B4226/FFFFFF?text=Shiva';"
+                 alt="Lord Shiva" class="shiva-image mx-auto">
+
+            <h1 class="text-4xl md:text-5xl font-extrabold text-red-800 mb-4 heading-icon cinzel-font">
+                <span class="text-yellow-600">🙏</span> सहस्त्र घट निमंत्रण <span class="text-yellow-600">🙏</span>
+            </h1>
+
+            <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-8">
+
+            <p class="text-lg md:text-xl text-gray-700 mb-6 italic cinzel-font">
+                "ॐ नमः शिवाय"
+            </p>
+
+            <p class="text-md md:text-lg text-gray-700 mb-8">
+                देवादिदेव महादेव के दिव्य आशीर्वाद से, हम आपको और आपके परिवार को समृद्धि, शांति और कल्याण के लिए आयोजित शुभ **सहस्त्र घट** में भाग लेने के लिए सहर्ष आमंत्रित करते हैं।
+            </p>
+
+            <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-8">
+
+            <h3 class="text-2xl md:text-3xl font-bold text-red-800 mb-4 cinzel-font">कार्यक्रम विवरण:</h3>
+            <ul class="text-left text-md md:text-lg text-gray-700 space-y-3 mb-8 px-4 sm:px-8">
+                <li class="flex items-start">
+                    <span class="text-yellow-600 mr-3 text-xl flex-shrink-0">🗓️</span>
+                    <strong class="w-36 inline-block flex-shrink-0">दिनांक:</strong> शनिवार, 3 अगस्त 2025
+                </li>
+                <li class="flex items-start">
+                    <span class="text-yellow-600 mr-3 text-xl flex-shrink-0">⏰</span>
+                    <strong class="w-36 inline-block flex-shrink-0">समय:</strong> शाम 5:00 बजे से (महाप्रसाद के बाद)
+                </li>
+                <li class="flex items-start">
+                    <span class="text-yellow-600 mr-3 text-xl flex-shrink-0">📍</span>
+                    <strong class="w-36 inline-block flex-shrink-0">स्थान:</strong> शिव मंदिर, कमल अपार्टमेंट 1, राम मंदिर रोड, बानी पार्क, जयपुर, राजस्थान 302016
+                </li>
+                <li class="flex items-start">
+                    <span class="text-yellow-600 mr-3 text-xl flex-shrink-0">🗺️</span>
+                    <strong class="w-36 inline-block flex-shrink-0">स्थान:</strong> <a href="https://www.google.com/maps/search/?api=1&query=WQGM%2B7J9+Kamal%20Apartment%201,%20Ram%20Mandir%20Rd,%20Bani%20Park,%20Jaipur,%20Rajasthan%20302016" target="_blank" class="text-blue-600 hover:underline">नीचे मानचित्र पर देखें</a>
+                </li>
+            </ul>
+
+            <!-- View Map Button -->
+            <button id="viewMapBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 inline-flex items-center justify-center mb-8">
+                <span class="mr-2">🗺️</span> मानचित्र देखें
+            </button>
+
+            <!-- Google Map Embed -->
+            <div id="mapSection" class="map-container">
+                <!-- IMPORTANT: Replace the 'src' below with the actual embed URL from Google Maps. -->
+                <!-- To get the embed URL: Go to Google Maps, search for "WQGM+7J9 Kamal Apartment 1, Ram Mandir Rd, Bani Park, Jaipur, Rajasthan 302016", click "Share", then "Embed a map", and copy the 'src' from the iframe code. -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.125139789718!2d75.79975767500588!3d26.900989360814923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db30182650001%3A0x2720d2c94a5e12e!2sShiv%20Mandir%2C%20Kamal%20Apartment%201%2C%20Ram%20Mandir%20Rd%2C%20Bani%20Park%2C%20Jaipur%2C%20Rajasthan%20302016!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+
+            <p class="text-md md:text-lg text-gray-700 mb-8 mt-8">
+                आपकी गरिमामयी उपस्थिति इस अवसर को वास्तव में विशेष बनाएगी। हम इन पवित्र क्षणों को साझा करने के लिए आपके आगमन का बेसब्री से इंतजार कर रहे हैं।
+            </p>
+
+            <hr class="border-t-4 border-yellow-500 w-36 mx-auto mb-6">
+
+            <p class="text-xl font-semibold text-red-800 mb-2 cinzel-font">
+                शुभकामनाओं सहित,
+            </p>
+            <p class="text-lg text-gray-700 mb-6 relative">
+                श्री राम गोपाल शर्मा<br>
+                तमाडा परिवार<br>
+                मो. : 9602570948
+                <button id="copyMobBtn" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs py-1 px-2 rounded-md transition-colors duration-200">कॉपी करें</button>
+                <span id="copyMessage" class="copy-message">कॉपी किया गया!</span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll to map section
+        document.getElementById('viewMapBtn').addEventListener('click', function() {
+            document.getElementById('mapSection').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Copy mobile number to clipboard
+        document.getElementById('copyMobBtn').addEventListener('click', function() {
+            const mobileNumber = '9602570948';
+            const tempInput = document.createElement('textarea');
+            tempInput.value = mobileNumber;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const copyMessage = document.getElementById('copyMessage');
+            copyMessage.classList.add('visible');
+            setTimeout(() => {
+                copyMessage.classList.remove('visible');
+            }, 1500); // Hide after 1.5 seconds
+        });
+
+        // Download Modal functionality - REMOVED
+        // const downloadCardBtn = document.getElementById('downloadCardBtn');
+        // const downloadModal = document.getElementById('downloadModal');
+        // const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // downloadCardBtn.addEventListener('click', function() {
+        //     downloadModal.classList.add('visible');
+        // });
+
+        // closeModalBtn.addEventListener('click', function() {
+        //     downloadModal.classList.remove('visible');
+        // });
+
+        // Close modal if clicked outside content - REMOVED
+        // downloadModal.addEventListener('click', function(event) {
+        //     if (event.target === downloadModal) {
+        //         downloadModal.classList.remove('visible');
+        //     }
+        // });
+    </script>
+</body>
+</html>
