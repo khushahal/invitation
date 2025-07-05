@@ -20,62 +20,39 @@
     <!-- Vanilla Tilt for card tilt effect -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
     <style>
-        /* Main body to center the phone */
+        /* Main body with background */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #6b7280, #374151);
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            padding: 2rem 1rem;
-        }
-
-        /* Phone Bezel for 360px preview */
-        .phone-bezel {
-            width: 360px;
-            height: 780px;
-            border: 14px solid #1f2937;
-            border-radius: 40px;
-            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5), inset 0 0 1px 1px rgba(255,255,255,0.1);
-            position: relative;
-            background: #111827;
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
             background: linear-gradient(135deg, #fefce8, #fed7aa, #f97316);
-            border-radius: 26px;
-            overflow-y: auto;
-            position: relative;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-        .phone-screen::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-        
-        .phone-notch {
-            position: absolute;
-            top: 14px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 20px;
-            background: #1f2937;
-            border-radius: 0 0 10px 10px;
-            z-index: 10;
-        }
-
-        /* All original styles are now contained within the .phone-screen */
-        .invitation-body {
+            font-family: 'Noto Sans Devanagari', sans-serif;
             padding: 1rem;
             box-sizing: border-box;
-            overflow-x: hidden;
+            /* overflow: hidden;  <-- THIS LINE WAS REMOVED TO ENABLE SCROLLING */
+        }
+        
+        #ripple-canvas {
+            position: fixed; /* Use fixed to ensure it covers the viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Allows clicks to pass through */
         }
 
+        /* Container to constrain the width */
+        .invitation-container {
+            width: 100%;
+            max-width: 420px; /* Mobile-first constraint */
+            position: relative;
+            z-index: 2; /* Ensure invitation is above the ripple canvas */
+            margin: auto; /* Ensures it stays centered */
+        }
+        
         .card-container {
             background: linear-gradient(135deg, #4c1d95, #7c3aed, #a855f7);
             border-radius: 24px;
@@ -88,7 +65,6 @@
             border: 4px solid transparent;
             animation: glowingBorder 4s ease-in-out infinite;
             transform-style: preserve-3d;
-            z-index: 1;
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
         }
         /* Touch animation for mobile */
@@ -153,11 +129,11 @@
         
         .copy-message, .audio-message {
             position: fixed; background-color: #4CAF50; color: white; padding: 10px 20px;
-            border-radius: 8px; font-size: 0.875rem; top: 80px; /* Adjusted for notch */
+            border-radius: 8px; font-size: 0.875rem; top: 20px;
             left: 50%; transform: translateX(-50%); opacity: 0;
             transition: opacity 0.4s ease-in-out; z-index: 1000;
         }
-        .audio-message { background-color: #1e40af; top: 120px; }
+        .audio-message { background-color: #1e40af; top: 60px; }
         .copy-message.visible, .audio-message.visible { opacity: 1; }
         
         button {
@@ -170,93 +146,94 @@
     </style>
 </head>
 <body>
-    <div class="phone-bezel">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-            <div class="invitation-body">
-                <div class="card-container">
-                    <img src="https://i.imgur.com/n3hK7Zy.png" onerror="this.onerror=null;this.src='https://placehold.co/600x600/000000/FFFFFF?text=Mandala';" alt="Om Namah Shivaya Mandala" class="mandala-image" />
-                    <img src="https://i.imgur.com/5j8B7xT.jpg" onerror="this.onerror=null;this.src='https://placehold.co/200x200/FFFFFF/000000?text=Shiva';" alt="Lord Shiva with Ganga" class="shiva-ganga" />
-                    
-                    <div class="content-panel">
-                        <img src="https://i.imgur.com/Y5qOG0w.png"
-                             onerror="this.onerror=null;this.src='https://placehold.co/120x120/6B4226/FFFFFF?text=Shiva';"
-                             alt="Lord Shiva meditating" class="shiva-image mx-auto mb-6" />
+    <canvas id="ripple-canvas"></canvas>
+    <div class="invitation-container">
+        <div class="card-container">
+            <img src="https://i.imgur.com/n3hK7Zy.png" onerror="this.onerror=null;this.src='https://placehold.co/600x600/000000/FFFFFF?text=Mandala';" alt="Om Namah Shivaya Mandala" class="mandala-image" />
+            <img src="https://i.imgur.com/5j8B7xT.jpg" onerror="this.onerror=null;this.src='https://placehold.co/200x200/FFFFFF/000000?text=Shiva';" alt="Lord Shiva with Ganga" class="shiva-ganga" />
+            
+            <div class="content-panel">
+                <img src="https://i.imgur.com/Y5qOG0w.png"
+                     onerror="this.onerror=null;this.src='https://placehold.co/120x120/6B4226/FFFFFF?text=Shiva';"
+                     alt="Lord Shiva meditating" class="shiva-image mx-auto mb-6" />
 
-                        <h1 class="text-2xl font-extrabold text-red-900 mb-4 cinzel-font">
-                            <span class="text-yellow-500">🙏</span> Sahastra Ghatt Invitation <span class="text-yellow-500">🙏</span>
-                        </h1>
+                <h1 class="text-2xl font-extrabold text-red-900 mb-4 cinzel-font">
+                    <span class="text-yellow-500">🙏</span> Sahastra Ghatt Invitation <span class="text-yellow-500">🙏</span>
+                </h1>
 
-                        <hr class="border-t-2 border-yellow-500 w-36 mx-auto mb-6" />
+                <hr class="border-t-2 border-yellow-500 w-36 mx-auto mb-6" />
 
-                        <p class="text-lg text-gray-900 mb-6 italic cinzel-font">
-                            <span lang="hi">ॐ नमः शिवाय</span>
-                        </p>
+                <p class="text-lg text-gray-900 mb-6 italic cinzel-font">
+                    <span lang="hi">ॐ नमः शिवाय</span>
+                </p>
 
-                        <p class="text-base text-gray-800 mb-6">
-                            With the divine blessings of Devadidev Mahadev, we joyfully invite you and your family to partake in the auspicious <strong>Sahastra Ghatt</strong> to seek prosperity, peace, and well-being.
-                        </p>
+                <p class="text-base text-gray-800 mb-6">
+                    With the divine blessings of Devadidev Mahadev, we joyfully invite you and your family to partake in the auspicious <strong>Sahastra Ghatt</strong> to seek prosperity, peace, and well-being.
+                </p>
 
-                        <hr class="border-t-2 border-yellow-500 w-36 mx-auto mb-6" />
+                <hr class="border-t-2 border-yellow-500 w-36 mx-auto" />
 
-                        <h3 class="text-xl font-bold text-red-900 mb-4 cinzel-font">Event Details:</h3>
-                        <div class="text-left text-base text-gray-800 space-y-4 mb-8 px-2">
-                            <div class="flex items-start gap-x-3">
-                                <span class="text-yellow-500 text-xl mt-1">🗓️</span>
-                                <div><strong class="font-semibold text-gray-900">Date:</strong> <span id="eventDate"></span></div>
-                            </div>
-                            <div class="flex items-start gap-x-3">
-                                <span class="text-yellow-500 text-xl mt-1">⏰</span>
-                                <div><strong class="font-semibold text-gray-900">Time:</strong> 5:00 PM onwards</div>
-                            </div>
-                            <div class="flex items-start gap-x-3">
-                                <span class="text-yellow-500 text-xl mt-1">📍</span>
-                                <div><strong class="font-semibold text-gray-900">Venue:</strong> Shiv Mandir, Kamal Apartment 1, Jaipur</div>
-                            </div>
-                             <div class="flex items-start gap-x-3">
-                                <span class="text-yellow-500 text-xl mt-1">🗺️</span>
-                                <div><strong class="font-semibold text-gray-900">Map:</strong> <a href="https://www.google.com/maps/search/?api=1&query=WQGM%2B7J9+Kamal%20Apartment%201,%20Ram%20Mandir%20Rd,%20Bani%20Park,%20Jaipur,%20Rajasthan%20302016" target="_blank" class="text-blue-600 hover:underline">View Here</a></div>
-                            </div>
+                <!-- Event Details Card -->
+                <div class="bg-amber-50/70 rounded-xl p-4 mt-6 border border-amber-300/50 shadow-inner">
+                    <h3 class="text-xl font-bold text-red-900 mb-4 cinzel-font text-center">Event Details:</h3>
+                    <div class="text-left text-base text-gray-800 space-y-4">
+                        <div class="flex items-start gap-x-3">
+                            <span class="text-yellow-500 text-xl mt-1">🗓️</span>
+                            <div><strong class="font-semibold text-gray-900">Date:</strong> <span id="eventDate"></span></div>
                         </div>
-
-                        <div class="flex flex-col justify-center items-center gap-4">
-                            <button id="viewMapBtn" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
-                                <span class="mr-1">🗺️</span> View Map
-                            </button>
-                            <button id="playPauseMantraBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg" disabled>
-                                <span class="mr-1">🎶</span> Play Mantra
-                            </button>
-                            <button id="shareBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
-                                <span class="mr-1">📲</span> Share
-                            </button>
+                        <div class="flex items-start gap-x-3">
+                            <span class="text-yellow-500 text-xl mt-1">⏰</span>
+                            <div><strong class="font-semibold text-gray-900">Time:</strong> 5:00 PM onwards</div>
                         </div>
-
-                        <div id="mapSection" class="map-container">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.125139789718!2d75.79975767500588!3d26.900989360814923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db30182650001%3A0x2720d2c94a5e12e!2sShiv%20Mandir%2C%20Kamal%20Apartment%201%2C%20Ram%20Mandir%20Rd%2C%20Bani%20Park%2C%20Jaipur%20Rajasthan%20302016!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="flex items-start gap-x-3">
+                            <span class="text-yellow-500 text-xl mt-1">📍</span>
+                            <div><strong class="font-semibold text-gray-900">Venue:</strong> Shiv Mandir, Kamal Apartment 1, Jaipur</div>
                         </div>
-
-                        <p class="text-base text-gray-800 mt-8">
-                            Your esteemed presence will make this occasion truly special.
-                        </p>
-
-                        <hr class="border-t-2 border-yellow-500 w-36 mx-auto my-6" />
-
-                        <p class="text-base font-semibold text-red-900 mb-2 cinzel-font">
-                            With Best Regards,
-                        </p>
-                        <div class="text-base text-gray-800">
-                            <p>Mr Ram Gopal Sharma & Family</p>
-                            <div class="flex items-center justify-center mt-2">
-                                <span>Mob: 9602570948</span>
-                                <button id="copyMobBtn" aria-label="Copy mobile number" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs py-1 px-2 rounded-md">
-                                    Copy
-                                </button>
-                            </div>
+                         <div class="flex items-start gap-x-3">
+                            <span class="text-yellow-500 text-xl mt-1">🗺️</span>
+                            <div><strong class="font-semibold text-gray-900">Map:</strong> <a href="https://www.google.com/maps/search/?api=1&query=WQGM%2B7J9+Kamal%20Apartment%201,%20Ram%20Mandir%20Rd,%20Bani%20Park,%20Jaipur,%20Rajasthan%20302016" target="_blank" class="text-blue-600 hover:underline">View Here</a></div>
                         </div>
-                        <span id="copyMessage" class="copy-message">Copied!</span>
-                        <span id="audioMessage" class="audio-message">Click "Play Mantra" to start the audio</span>
                     </div>
                 </div>
+
+                <div class="flex flex-col justify-center items-center gap-4 mt-8">
+                    <button id="viewMapBtn" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
+                        <span class="mr-1">🗺️</span> View Map
+                    </button>
+                    <button id="playPauseMantraBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg" disabled>
+                        <span class="mr-1">🎶</span> Play Mantra
+                    </button>
+                    <button id="shareBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
+                        <span class="mr-1">📲</span> Share
+                    </button>
+                </div>
+
+                <div id="mapSection" class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.125139789718!2d75.79975767500588!3d26.900989360814923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db30182650001%3A0x2720d2c94a5e12e!2sShiv%20Mandir%2C%20Kamal%20Apartment%201%2C%20Ram%20Mandir%20Rd%2C%20Bani%20Park%2C%20Jaipur%20Rajasthan%20302016!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                
+                <p class="text-base text-gray-800 mt-8">
+                    Your esteemed presence will make this occasion truly special.
+                </p>
+
+                <!-- With Best Regards Card -->
+                <div class="bg-amber-50/70 rounded-xl p-4 mt-6 border border-amber-300/50 shadow-inner">
+                    <p class="text-base font-semibold text-red-900 mb-2 cinzel-font">
+                        With Best Regards,
+                    </p>
+                    <div class="text-base text-gray-800">
+                        <p>Mr Ram Gopal Sharma & Family</p>
+                        <div class="flex items-center justify-center mt-2">
+                            <span>Mob: 9602570948</span>
+                            <button id="copyMobBtn" aria-label="Copy mobile number" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs py-1 px-2 rounded-md">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <span id="copyMessage" class="copy-message">Copied!</span>
+                <span id="audioMessage" class="audio-message">Click "Play Mantra" to start the audio</span>
             </div>
         </div>
     </div>
@@ -271,6 +248,61 @@
         document.addEventListener('DOMContentLoaded', () => {
             const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
+            // --- Ganga Jal Ripple Effect ---
+            const canvas = document.getElementById('ripple-canvas');
+            const ctx = canvas.getContext('2d');
+            let ripples = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+
+            function createRipple(e) {
+                const x = e.clientX || (e.touches && e.touches[0].clientX);
+                const y = e.clientY || (e.touches && e.touches[0].clientY);
+                if (x === undefined) return;
+
+                ripples.push({
+                    x: x,
+                    y: y,
+                    radius: 0,
+                    opacity: 1,
+                    speed: 1.5,
+                    lineWidth: 3
+                });
+            }
+
+            function animateRipples() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = ripples.length - 1; i >= 0; i--) {
+                    let r = ripples[i];
+                    r.radius += r.speed;
+                    r.opacity -= 0.02;
+                    r.lineWidth -= 0.05;
+
+                    if (r.opacity <= 0) {
+                        ripples.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${r.opacity})`;
+                    ctx.lineWidth = Math.max(0, r.lineWidth);
+                    ctx.stroke();
+                }
+                requestAnimationFrame(animateRipples);
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            document.body.addEventListener('click', createRipple);
+            document.body.addEventListener('touchstart', createRipple, { passive: true });
+            animateRipples();
+            // --- End Ripple Effect ---
+
+
             // Populate date immediately
             try {
                 const eventDate = new Date('2025-08-03T17:00:00');
@@ -283,7 +315,7 @@
 
             // GSAP Animations
             if (typeof gsap !== 'undefined') {
-                gsap.from('.shiva-image, h1, hr, p, h3, .text-left, .flex-col', {
+                gsap.from('.shiva-image, h1, hr, p, .bg-amber-50\\/70, .flex-col', {
                     opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: 'power3.out',
                 });
             }
@@ -306,14 +338,18 @@
             const viewMapBtn = document.getElementById('viewMapBtn');
             const mapSection = document.getElementById('mapSection');
             if (viewMapBtn && mapSection) {
-                viewMapBtn.addEventListener('click', () => mapSection.classList.toggle('active'));
+                viewMapBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    mapSection.classList.toggle('active');
+                });
             }
 
             // Copy Mobile Number
             const copyMobBtn = document.getElementById('copyMobBtn');
             const copyMessage = document.getElementById('copyMessage');
             if (copyMobBtn && copyMessage) {
-                copyMobBtn.addEventListener('click', () => {
+                copyMobBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent ripple from firing on button click
                     navigator.clipboard.writeText('9602570948').then(() => {
                         copyMessage.classList.add('visible');
                         setTimeout(() => copyMessage.classList.remove('visible'), 2000);
@@ -324,7 +360,8 @@
             // Share on WhatsApp
             const shareBtn = document.getElementById('shareBtn');
             if(shareBtn) {
-                shareBtn.addEventListener('click', () => {
+                shareBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     const text = `🙏 You are cordially invited to the Sahastra Ghatt Puja 🙏\n\nJoin us for this auspicious occasion to seek divine blessings.\n\n🗓️ Date: Sunday, August 3, 2025\n⏰ Time: 5:00 PM onwards\n📍 Venue: Shiv Mandir, Kamal Apartment 1, Jaipur\n\nView the full invitation:`;
                     const url = 'https://khushahal.github.io/invitation/';
                     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`;
@@ -359,7 +396,8 @@
                     showAudioMessage('Audio could not be loaded.');
                 });
                 
-                playPauseMantraBtn.addEventListener('click', () => {
+                playPauseMantraBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     if (mantraAudio.paused) {
                         mantraAudio.play().catch(() => showAudioMessage('Autoplay blocked. Please press play.'));
                     } else {
