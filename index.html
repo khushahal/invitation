@@ -24,14 +24,13 @@
         body {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Align to top to see start of scroll */
             min-height: 100vh;
             margin: 0;
             background: linear-gradient(135deg, #fefce8, #fed7aa, #f97316);
             font-family: 'Noto Sans Devanagari', sans-serif;
-            padding: 1rem;
+            padding: 2rem 1rem; /* Added more padding for scroll room */
             box-sizing: border-box;
-            /* overflow: hidden;  <-- THIS LINE WAS REMOVED TO ENABLE SCROLLING */
         }
         
         #ripple-canvas {
@@ -40,7 +39,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 100; /* Increased z-index to be on top of everything */
             pointer-events: none; /* Allows clicks to pass through */
         }
 
@@ -49,7 +48,7 @@
             width: 100%;
             max-width: 420px; /* Mobile-first constraint */
             position: relative;
-            z-index: 2; /* Ensure invitation is above the ripple canvas */
+            z-index: 2; /* Invitation is below the ripple canvas */
             margin: auto; /* Ensures it stays centered */
         }
         
@@ -131,7 +130,7 @@
             position: fixed; background-color: #4CAF50; color: white; padding: 10px 20px;
             border-radius: 8px; font-size: 0.875rem; top: 20px;
             left: 50%; transform: translateX(-50%); opacity: 0;
-            transition: opacity 0.4s ease-in-out; z-index: 1000;
+            transition: opacity 0.4s ease-in-out; z-index: 1001; /* Above ripple */
         }
         .audio-message { background-color: #1e40af; top: 60px; }
         .copy-message.visible, .audio-message.visible { opacity: 1; }
@@ -222,7 +221,7 @@
                         With Best Regards,
                     </p>
                     <div class="text-base text-gray-800">
-                        <p>Mr Ram Gopal Sharma & Family</p>
+                        <p>Mr Ram Gopal Sharma & Tamda Family</p>
                         <div class="flex items-center justify-center mt-2">
                             <span>Mob: 9602570948</span>
                             <button id="copyMobBtn" aria-label="Copy mobile number" class="ml-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs py-1 px-2 rounded-md">
